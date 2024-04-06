@@ -1,26 +1,51 @@
 // ==UserScript==
 // @name            Scrolller.com Adblocker
 // @name:de         Scrolller.com Werbeblocker
-// @version         1.0.2
-// @description     Blocks Ads and the Premium & Adblock Popup on Scrolller.com
-// @description:de  Blockiert Werbung und das Premium & Adblock Popup auf Scrolller.com
+// @version         1.0.3
+// @description     Blocks Ads and the Premium, Adblock & Bandwidth Popup on Scrolller.com
+// @description:de  Blockiert Werbung und das Premium, Adblock & Bandwith Popup auf Scrolller.com
 // @icon            https://scrolller.com/assets/favicon-16x16.png
 // @author          TalkLounge (https://github.com/TalkLounge)
 // @namespace       https://github.com/TalkLounge/scrolller.com-adblocker
 // @license         MIT
 // @match           https://scrolller.com/*
 // @grant           none
-// @run-at          document-start
 // ==/UserScript==
 
 (function () {
     'use strict';
 
     const s = document.createElement("style");
-    s.innerHTML = `.popup:has(#recommendations__popup), .popup:has(.ad-block-popup), .popup:has([class^=PremiumCTAPopup]), .popup:has([class^=GetPremiumPopup]), .fullscreen-view__ad {
+    s.innerHTML = `.popup:has(#recommendations__popup) {
         display: none;
     }
 
+    /* Anti-Adblock Popup */
+    .popup:has(svg[width=80]) {
+        display: none;
+    }
+
+    /* Legacy */
+    .popup:has([class^=PremiumCTAPopup]) {
+        display: none;
+    }
+
+    /* Premium Popup */
+    .popup:has(img[src*=cat]) {
+        display: none;
+    }
+
+    /* Bandwidth Popup */
+    .popup:has([class^=_description]) {
+        display: none;
+    }
+
+    /* Banner Ad */
+    .fullscreen-view__ad {
+        display: none;
+    }
+
+    /* Feed Ads */
     .vertical-view__column > .vertical-view__item {
         visibility: hidden;
     }`;
