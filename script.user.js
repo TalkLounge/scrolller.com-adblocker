@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Scrolller.com Adblocker
 // @name:de         Scrolller.com Werbeblocker
-// @version         1.0.4
+// @version         1.0.5
 // @description     Blocks Ads and the Premium, Adblock & Bandwidth Popup on Scrolller.com
 // @description:de  Blockiert Werbung und das Premium, Adblock & Bandwith Popup auf Scrolller.com
 // @icon            https://scrolller.com/assets/favicon-16x16.png
@@ -35,13 +35,28 @@
         display: none;
     }
 
+    /* Feed: Upgrade for the Ultimate Experience! Popup */
+    .popup:has([class^=body_description]) {
+        display: none;
+    }
+
     /* Feed: Inline Ads */
-    .vertical-view__column > .vertical-view__item {
+    [class^=verticalView_container] a[aria-label='Ad Link'] {
+        visibility: hidden;
+    }
+
+	/* Feed: Inline Ads */
+    main div:has(>div>div>iframe), [class^=verticalView_container] div:has(>div>div>iframe) {
         visibility: hidden;
     }
 
     /* Post: Banner Ad */
-    .fullscreen-view > div > div:has([data-test-id=fullscreen-menu]) div {
+    #fullscreen-view a[class^=FullscreenView_adLink] {
+        display: none;
+    }
+
+    /* Post: Right Bottom Corner Circle Ad */
+    #fullscreen-view button:has(>div>img[src^='/assets/fullscreen']) {
         display: none;
     }
 
