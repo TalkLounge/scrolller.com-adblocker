@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Scrolller.com Adblocker
 // @name:de         Scrolller.com Werbeblocker
-// @version         1.0.5
+// @version         1.0.6
 // @description     Blocks Ads and the Premium, Adblock & Bandwidth Popup on Scrolller.com
 // @description:de  Blockiert Werbung und das Premium, Adblock & Bandwith Popup auf Scrolller.com
 // @icon            https://scrolller.com/assets/favicon-16x16.png
@@ -9,14 +9,13 @@
 // @namespace       https://github.com/TalkLounge/scrolller.com-adblocker
 // @license         MIT
 // @match           https://scrolller.com/*
-// @grant           none
+// @grant           GM_addStyle
 // ==/UserScript==
 
 (function () {
     'use strict';
 
-    const s = document.createElement("style");
-    s.innerHTML = `.popup:has(#recommendations__popup) {
+    GM_addStyle(`.popup:has(#recommendations__popup) {
         display: none;
     }
 
@@ -63,15 +62,30 @@
     /* Legacy */
     .popup:has([class^=PremiumCTAPopup]) {
         display: none;
-    }`;
-    document.head.append(s);
+    }
 
-    const old_window_top_fetch = window.top.fetch;
-    window.top.fetch = function () {
-        if (arguments[1] && arguments[1].body && arguments[1].body.indexOf("AffiliateQuery") != -1) {
-            return;
-        }
+    /* Feed: Inline Ads */
+    [class^=column_galleryColumn] [class^=handler_galleryItemHandler]:has(a[class^=native_nativeAd]) {
+        visibility: hidden;
+    }
 
-        return old_window_top_fetch.apply(this, arguments);
-    };
+    /* Feed: Inline Ads */
+    [class^=column_galleryColumn] [class^=handler_galleryItemHandler]:has([class^=IframeLiveAd_iframeAdContainer]) {
+        visibility: hidden;
+    }
+
+    /* Feed: Inline random first Video */
+    [class^=column_galleryColumn] [class^=handler_galleryItemHandler]:has(.ez-video-wrap) {
+        opacity: 0;
+    }
+
+    /* Feed: Right Bottom Corner Video Ad */
+    #ez-video-outstream-wrap {
+        display: none;
+    }
+
+    /* Right Bottom Corner Circle Ad */
+    button[class^=LiveCircleButton_wrapper] {
+        display: none;
+    }`);
 })();
