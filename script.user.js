@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Scrolller.com Adblocker
 // @name:de         Scrolller.com Werbeblocker
-// @version         1.0.6
+// @version         1.0.7
 // @description     Blocks Ads and the Premium, Adblock & Bandwidth Popup on Scrolller.com
 // @description:de  Blockiert Werbung und das Premium, Adblock & Bandwith Popup auf Scrolller.com
 // @icon            https://scrolller.com/assets/favicon-16x16.png
@@ -15,77 +15,44 @@
 (function () {
     'use strict';
 
-    GM_addStyle(`.popup:has(#recommendations__popup) {
-        display: none;
-    }
-
-    /* General: Anti-Adblock Popup */
-    .popup:has(svg[width=80]) {
-        display: none;
-    }
-
-    /* General: Premium Popup */
+    GM_addStyle(`
+    /* General: Popup: Wish Scrolller Was Ad-Free? */
     .popup:has(img[src*=cat]) {
         display: none;
     }
 
-    /* Feed: Bandwidth Popup */
-    .popup:has([class^=_description]) {
+    /* General: Popup: Support Scrolller - Explore More Content! */
+    .popup:has([class*=ctaButton]) {
         display: none;
     }
 
-    /* Feed: Upgrade for the Ultimate Experience! Popup */
-    .popup:has([class^=body_description]) {
+    /* General: Header Button */
+    [class*=desktopAdSessionButton] {
         display: none;
     }
 
-    /* Feed: Inline Ads */
-    [class^=verticalView_container] a[aria-label='Ad Link'] {
+    /* Feed: Banner Ad Links */
+    [class*=content]>a[class*=highlight] {
+        display: none;
+    }
+
+    /* Feed: Inline Scrolller Ads */
+    [class*=galleryItemHandler]:has([class*=nativeAd]) {
         visibility: hidden;
     }
 
-	/* Feed: Inline Ads */
-    main div:has(>div>div>iframe), [class^=verticalView_container] div:has(>div>div>iframe) {
+    /* Feed: Inline External Ads */
+    [class*=galleryItemHandler]:has([class*=iframeAdContainer]) {
         visibility: hidden;
     }
 
-    /* Post: Banner Ad */
-    #fullscreen-view a[class^=FullscreenView_adLink] {
+    /* Feed: Right Bottom Corner Circle Ad */
+    button:has([class*=liveCircle]) {
         display: none;
     }
 
-    /* Post: Right Bottom Corner Circle Ad */
-    #fullscreen-view button:has(>div>img[src^='/assets/fullscreen']) {
-        display: none;
-    }
-
-    /* Legacy */
-    .popup:has([class^=PremiumCTAPopup]) {
-        display: none;
-    }
-
-    /* Feed: Inline Ads */
-    [class^=column_galleryColumn] [class^=handler_galleryItemHandler]:has(a[class^=native_nativeAd]) {
-        visibility: hidden;
-    }
-
-    /* Feed: Inline Ads */
-    [class^=column_galleryColumn] [class^=handler_galleryItemHandler]:has([class^=IframeLiveAd_iframeAdContainer]) {
-        visibility: hidden;
-    }
-
-    /* Feed: Inline random first Video */
-    [class^=column_galleryColumn] [class^=handler_galleryItemHandler]:has(.ez-video-wrap) {
-        opacity: 0;
-    }
-
-    /* Feed: Right Bottom Corner Video Ad */
-    #ez-video-outstream-wrap {
-        display: none;
-    }
-
-    /* Right Bottom Corner Circle Ad */
-    button[class^=LiveCircleButton_wrapper] {
+    /* Post: Banner Ad Link */
+    #fullscreen-view [class*=topBanner] a[class*=adLink] {
         display: none;
     }`);
 })();
